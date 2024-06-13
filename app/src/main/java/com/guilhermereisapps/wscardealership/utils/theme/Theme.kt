@@ -1,4 +1,4 @@
-package com.guilhermereisapps.wscardealership.ui.theme
+package com.guilhermereisapps.wscardealership.utils.theme
 
 import android.app.Activity
 import android.os.Build
