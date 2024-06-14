@@ -13,14 +13,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,18 +34,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.guilhermereisapps.wscardealership.R
 import com.guilhermereisapps.wscardealership.data.model.Car
 import com.guilhermereisapps.wscardealership.data.model.Compra
 import com.guilhermereisapps.wscardealership.data.model.Comprador
 import com.guilhermereisapps.wscardealership.presentation.components.AppBar
+import com.guilhermereisapps.wscardealership.presentation.view.navigation.ScreensNavigation
+import com.guilhermereisapps.wscardealership.presentation.viewmodel.CarsForSaleViewModel
 import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-fun CarDetailsScreen(car: Car) {
+fun CarDetailsScreen(
+    navController: NavHostController,
+    viewModel: CarsForSaleViewModel,
+    car: Car
+) {
     Scaffold(
         topBar = { AppBar(title = "Detalhes do carro") }
     ) { topBarPadding ->
@@ -51,13 +63,47 @@ fun CarDetailsScreen(car: Car) {
                 .consumeWindowInsets(topBarPadding)
                 .verticalScroll(rememberScrollState())
         ) {
-            CarDetails(car = car)
+            CarDetails(car = car, viewModel, navController)
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarDetails(car: Car) {
+fun CarDetails(car: Car, viewModel: CarsForSaleViewModel, navController: NavHostController) {
+    var showModal by remember { mutableStateOf(false) }
+
+    if (showModal) {
+        ModalBottomSheet(
+            onDismissRequest = { showModal = false },
+            sheetState = rememberModalBottomSheetState(true)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Pronto. Um consultor de vendas entrará em contato em breve.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        showModal = false
+                        navController.navigate(ScreensNavigation.CarsForSaleScreen.name) {
+                            popUpTo(ScreensNavigation.CarsForSaleScreen.name) { inclusive = true }
+                        }
+                    }
+                ) {
+                    Text(text = "Entendi")
+                }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,12 +140,16 @@ fun CarDetails(car: Car) {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
-        ContactForm(car)
+        ContactForm(car, viewModel, onPurchaseComplete = { showModal = true })
     }
 }
 
 @Composable
-fun ContactForm(car: Car) {
+fun ContactForm(
+    car: Car,
+    viewModel: CarsForSaleViewModel,
+    onPurchaseComplete: () -> Unit,
+) {
     val name = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val phone = remember { mutableStateOf("") }
@@ -152,29 +202,12 @@ fun ContactForm(car: Car) {
                     email = email.value
                 )
                 val compra = Compra(car = car, comprador = comprador)
+                viewModel.insertCompra(compra)
+                onPurchaseComplete()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text(text = "Eu quero")
         }
     }
-}
-
-@Preview
-@Composable
-fun CarDetailsScreenPreview() {
-    CarDetailsScreen(
-        car = Car(
-            ano = 2015,
-            combustivel = "FLEX",
-            cor = "BEGE",
-            id = 1,
-            modeloId = 12,
-            modeloNome = "ONIX PLUS",
-            numPortas = 4,
-            timestampCadastro = 1696539488,
-            valor = 50.000,
-            image = R.drawable.onixplus,
-        )
-    )
 }

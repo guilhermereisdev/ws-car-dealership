@@ -3,6 +3,8 @@ package com.guilhermereisapps.wscardealership.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.guilhermereisapps.wscardealership.data.model.Car
+import com.guilhermereisapps.wscardealership.data.model.Compra
+import com.guilhermereisapps.wscardealership.domain.repository.CompraRepository
 import com.guilhermereisapps.wscardealership.domain.usecase.GetCarsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CarsForSaleViewModel @Inject constructor(
-    private val getCarsUseCase: GetCarsUseCase
+    private val getCarsUseCase: GetCarsUseCase,
+    private val compraRepository: CompraRepository,
 ) : ViewModel() {
 
     private val _cars = MutableStateFlow<List<Car>>(emptyList())
@@ -30,5 +33,11 @@ class CarsForSaleViewModel @Inject constructor(
 
     fun selectCar(car: Car) {
         _selectedCar.value = car
+    }
+
+    fun insertCompra(compra: Compra) {
+        viewModelScope.launch {
+            compraRepository.insertCompra(compra)
+        }
     }
 }
