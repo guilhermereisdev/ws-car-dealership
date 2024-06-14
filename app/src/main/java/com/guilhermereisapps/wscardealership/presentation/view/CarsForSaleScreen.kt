@@ -14,16 +14,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.guilhermereisapps.wscardealership.R
 import com.guilhermereisapps.wscardealership.data.model.Car
 import com.guilhermereisapps.wscardealership.presentation.viewmodel.CarsForSaleViewModel
-import com.guilhermereisapps.wscardealership.utils.components.AppBar
-import com.guilhermereisapps.wscardealership.utils.components.CarCard
+import com.guilhermereisapps.wscardealership.presentation.components.AppBar
+import com.guilhermereisapps.wscardealership.presentation.components.CarCard
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CarsForSaleScreen(
-    navController: NavController,
     viewModel: CarsForSaleViewModel,
+    onCarClick: (Car) -> Unit,
 ) {
     val cars = viewModel.cars.collectAsState()
     viewModel.fetchCars()
@@ -37,7 +38,7 @@ fun CarsForSaleScreen(
                 .padding(topBarPadding)
                 .consumeWindowInsets(topBarPadding)
         ) {
-            CarsList(cars = cars.value)
+            CarsList(cars = cars.value, onCarClick = { onCarClick(it) })
         }
     }
 }
@@ -45,18 +46,24 @@ fun CarsForSaleScreen(
 @Composable
 fun CarsList(
     modifier: Modifier = Modifier,
-    cars: List<Car>
+    cars: List<Car>,
+    onCarClick: (Car) -> Unit,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(cars) { car ->
-            CarCard(car)
+            when (car.modeloId) {
+                12 -> car.image = R.drawable.onixplus
+                14 -> car.image = R.drawable.jetta
+                79 -> car.image = R.drawable.hilux
+            }
+            CarCard(car = car, onClick = { onCarClick(car) })
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ScreenPreview() {
+fun CarsForSaleScreenPreview() {
     CarsList(
         modifier = Modifier.background(
             color = androidx.compose.ui.graphics.Color.White
@@ -117,6 +124,7 @@ fun ScreenPreview() {
                 timestampCadastro = 1625101600,
                 valor = 60.000
             )
-        )
+        ),
+        onCarClick = {},
     )
 }

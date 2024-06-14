@@ -1,11 +1,12 @@
-package com.guilhermereisapps.wscardealership.utils.navigation
+package com.guilhermereisapps.wscardealership.presentation.view.navigation
 
 enum class ScreensNavigation {
     SplashScreen,
     LoginScreen,
     CreateAccountScreen,
     CarsForSaleScreen,
-    UserOptions;
+    UserOptions,
+    CarDetailsScreen;
 
     companion object {
         fun fromRoute(route: String?): ScreensNavigation =
@@ -15,6 +16,7 @@ enum class ScreensNavigation {
                 CreateAccountScreen.name -> CreateAccountScreen
                 CarsForSaleScreen.name -> CarsForSaleScreen
                 UserOptions.name -> UserOptions
+                CarDetailsScreen.name -> CarDetailsScreen
                 null -> CarsForSaleScreen
                 else -> throw IllegalArgumentException("Rota $route não é reconhecida.")
             }

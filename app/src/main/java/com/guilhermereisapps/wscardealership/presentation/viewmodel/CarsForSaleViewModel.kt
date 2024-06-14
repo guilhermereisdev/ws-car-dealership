@@ -18,10 +18,17 @@ class CarsForSaleViewModel @Inject constructor(
     private val _cars = MutableStateFlow<List<Car>>(emptyList())
     val cars: StateFlow<List<Car>> = _cars
 
+    private val _selectedCar = MutableStateFlow<Car?>(null)
+    val selectedCar: StateFlow<Car?> get() = _selectedCar
+
     fun fetchCars() {
         viewModelScope.launch {
             val response = getCarsUseCase.execute()
             _cars.value = response.cars
         }
+    }
+
+    fun selectCar(car: Car) {
+        _selectedCar.value = car
     }
 }

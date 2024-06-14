@@ -1,4 +1,4 @@
-package com.guilhermereisapps.wscardealership.utils.components
+package com.guilhermereisapps.wscardealership.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,7 +47,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.guilhermereisapps.wscardealership.R
 import com.guilhermereisapps.wscardealership.data.model.Car
-import com.guilhermereisapps.wscardealership.utils.navigation.ScreensNavigation
+import com.guilhermereisapps.wscardealership.presentation.view.navigation.ScreensNavigation
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -127,8 +127,10 @@ fun CarCard(
         modeloNome = "ONIX PLUS",
         numPortas = 4,
         timestampCadastro = 1696539488,
-        valor = 50.000
-    )
+        valor = 50.000,
+        image = R.drawable.onixplus,
+    ),
+    onClick: () -> Unit = {},
 ) {
     val formattedValue = remember {
         NumberFormat.getCurrencyInstance(Locale("pt", "BR")).format(car.valor?.times(1000))
@@ -137,7 +139,8 @@ fun CarCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -152,7 +155,7 @@ fun CarCard(
                 .background(Color.White)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onixplus), // Substitua com uma imagem válida
+                painter = painterResource(id = car.image ?: R.drawable.nophoto),
                 contentDescription = "Carro",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
