@@ -2,6 +2,7 @@ package com.guilhermereisapps.wscardealership.data.model
 
 import androidx.annotation.DrawableRes
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Car(
     @SerializedName("ano")
@@ -23,6 +24,5 @@ data class Car(
     @SerializedName("valor")
     val valor: Double? = null,
     @SerializedName("image")
-//    @DrawableRes val image: Int? = null,
-    val image: String? = null,
+    @DrawableRes var image: Int? = null,
 )

@@ -13,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.guilhermereisapps.wscardealership.utils.navigation.Navigation
+import androidx.navigation.compose.rememberNavController
+import com.guilhermereisapps.wscardealership.presentation.view.navigation.Navigation
 import com.guilhermereisapps.wscardealership.utils.theme.WSCarDealershipTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,7 +41,8 @@ fun StartApp() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Navigation()
+            val navController = rememberNavController()
+            Navigation(navController)
         }
     }
 }
