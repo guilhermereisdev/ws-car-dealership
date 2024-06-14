@@ -1,4 +1,4 @@
-package com.guilhermereisapps.wscardealership.ui.theme
+package com.guilhermereisapps.wscardealership.utils.theme
 
 import androidx.compose.ui.graphics.Color
 
