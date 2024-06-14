@@ -81,4 +81,8 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     kapt(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
 }
