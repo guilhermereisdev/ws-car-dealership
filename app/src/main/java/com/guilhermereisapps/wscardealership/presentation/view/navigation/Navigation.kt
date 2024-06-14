@@ -22,16 +22,23 @@ fun Navigation(
     ) {
         composable(ScreensNavigation.CarsForSaleScreen.name) {
             CarsForSaleScreen(
+                navController = navController,
                 viewModel = carsForSaleViewModel,
                 onCarClick = { car ->
                     carsForSaleViewModel.selectCar(car)
                     navController.navigate(ScreensNavigation.CarDetailsScreen.name)
-                }
+                },
             )
         }
         composable(ScreensNavigation.CarDetailsScreen.name) {
             val selectedCar = carsForSaleViewModel.selectedCar.collectAsState().value
-            selectedCar?.let { car -> CarDetailsScreen(car) }
+            selectedCar?.let { car ->
+                CarDetailsScreen(
+                    navController = navController,
+                    viewModel = carsForSaleViewModel,
+                    car = car,
+                )
+            }
         }
         composable(ScreensNavigation.SplashScreen.name) {
 //            SplashScreen()

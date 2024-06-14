@@ -1,6 +1,5 @@
 package com.guilhermereisapps.wscardealership.presentation.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,16 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.guilhermereisapps.wscardealership.R
 import com.guilhermereisapps.wscardealership.data.model.Car
 import com.guilhermereisapps.wscardealership.presentation.viewmodel.CarsForSaleViewModel
 import com.guilhermereisapps.wscardealership.presentation.components.AppBar
 import com.guilhermereisapps.wscardealership.presentation.components.CarCard
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CarsForSaleScreen(
+    navController: NavHostController,
     viewModel: CarsForSaleViewModel,
     onCarClick: (Car) -> Unit,
 ) {
