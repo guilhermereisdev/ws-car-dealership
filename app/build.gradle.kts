@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,4 +86,7 @@ dependencies {
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
     testImplementation(libs.room.testing)
+    implementation(libs.work.manager)
+    implementation(libs.okhttp3)
+    implementation(libs.okhttp3.logging.interceptor)
 }
